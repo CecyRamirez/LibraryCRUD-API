@@ -43,8 +43,28 @@ const addAuthors = async (req,res)=>{
     }
 };
 
+//Update
+const updateAuthor = async (req,res)=>{
+    try {
+        const { id } = req.params;
+        const{ name, bio } = req.body;
+
+        if (id === undefined || name === undefined || bio === undefined){
+            req.status(400).json({message: "Bad request, please fill all fields."})
+        }
+        const author = { name, bio };
+        const connection = await getConnection();
+        const result = await connection.query("UPDATE authors SET ? WHERE id = ?", [author,id])
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods={
     getAuthors,
     getAuthor,
-    addAuthors
+    addAuthors,
+    updateAuthor
 }
