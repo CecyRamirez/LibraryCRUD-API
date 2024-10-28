@@ -5,5 +5,6 @@ const router=Router();
 
 router.get("/", authorController.getAuthors);
 router.get("/:id", authorController.getAuthor);
+router.post("/", authorController.addAuthors);
 
 export default router;

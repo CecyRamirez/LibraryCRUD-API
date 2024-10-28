@@ -25,7 +25,26 @@ const getAuthor = async (req,res)=>{
     }
 };
 
+//Add a new author to database
+const addAuthors = async (req,res)=>{
+    try {
+        const{ name, bio } = req.body;
+
+        if(name === undefined || bio === undefined){
+            req.status(400).json({message: "Bad request, please fill all fields."})
+        }
+        const author = { name, bio };
+        const connection = await getConnection();
+        const result = await connection.query("INSERT INTO authors SET ?", author);
+        res.json({ message: "Author added" });
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods={
     getAuthors,
-    getAuthor
+    getAuthor,
+    addAuthors
 }
