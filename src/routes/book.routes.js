@@ -5,5 +5,6 @@ const router=Router();
 
 router.get("/", bookController.getBooks);
 router.get("/:id", bookController.getBook);
+router.post("/", bookController.addBooks);
 
 export default router;

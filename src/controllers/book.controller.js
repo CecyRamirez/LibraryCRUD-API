@@ -26,7 +26,25 @@ const getBook = async (req,res)=>{
     
 };
 
+//add book to database
+const addBooks = async (req,res)=>{
+    try {
+        const{ title, genre, author_id } = req.body;
+        if(title === undefined || genre === undefined || author_id === undefined){
+            req.status(400).json({message: "Bad request, please fill all fields."})
+        }
+        const book = { title, genre, author_id };
+        const connection = await getConnection();
+        const result=await connection.query("INSERT INTO books SET ?", book);
+        res.json({ message: "Book added" });
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods={
     getBooks,
-    getBook
+    getBook,
+    addBooks
 }
