@@ -43,8 +43,28 @@ const addBooks = async (req,res)=>{
     }
 };
 
+//update a register added to the database
+const updateBook = async (req,res)=>{
+    try {
+        const { id } = req.params;
+        const{ title, genre, author_id } = req.body;
+
+        if (id === undefined || title === undefined || genre === undefined || author_id === undefined){
+            req.status(400).json({message: "Bad request, please fill all fields."})
+        }
+        const book = { title, genre, author_id };
+        const connection = await getConnection();
+        const result = await connection.query("UPDATE books SET ? WHERE id = ?", [book,id])
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods={
     getBooks,
     getBook,
-    addBooks
+    addBooks,
+    updateBook
 }
