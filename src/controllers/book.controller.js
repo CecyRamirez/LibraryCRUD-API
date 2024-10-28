@@ -12,7 +12,21 @@ const getBooks = async (req,res)=>{
     }
     
 };
+//Get book by ID
+const getBook = async (req,res)=>{
+    try {
+        const { id } = req.params;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT id,title,genre,author_id FROM books WHERE id = ?", id)
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+    
+};
 
 export const methods={
-    getBooks
+    getBooks,
+    getBook
 }
